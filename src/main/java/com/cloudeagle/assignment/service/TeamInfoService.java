@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeamInfoService {
 
-    public ResponseEntity<ApiResponse> getTeamInfo() {
+    public ResponseEntity<ApiResponse> getTeamInfo(String code) {
         try{
             System.out.println("Team Info called");
             return ResponseEntity.status(200).body(new ApiResponse(true,"Data Success",null));
