@@ -1,10 +1,12 @@
 package com.cloudeagle.assignment.service;
 
 import com.cloudeagle.assignment.response.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class TeamInfoService {
 
     public ResponseEntity<ApiResponse> getTeamInfo(String code) {
