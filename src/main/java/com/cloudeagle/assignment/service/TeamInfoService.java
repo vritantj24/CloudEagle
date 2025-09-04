@@ -1,20 +1,46 @@
 package com.cloudeagle.assignment.service;
 
 import com.cloudeagle.assignment.response.ApiResponse;
+import com.cloudeagle.assignment.utils.ApiCallUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class TeamInfoService {
 
-    public ResponseEntity<ApiResponse> getTeamInfo(String code) {
+    @Autowired
+    private OAuthService oAuthService;
+    @Autowired
+    private ApiCallUtils apiCallUtils;
+    @Value("${dropbox.team-info-url}")
+    private String teamInfoUrl;
+
+    public void getTeamInfo(String code) {
         try{
-            System.out.println("Team Info called");
-            return ResponseEntity.status(200).body(new ApiResponse(true,"Data Success",null));
+            log.info("Fetching access token.....");
+            String token = oAuthService.getAccessToken(code);
+            if(token==null || token.isEmpty()){
+                throw new RuntimeException("Access token Not Present, Unauthorized");
+            }
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Authorization","Bearer " + token);
+            httpHeaders.add("Content-Type","application/json");
+
+            ApiResponse response = apiCallUtils.makePostRequestWithoutBody(teamInfoUrl,httpHeaders);
+            if(!response.isStatus()){
+                throw new RuntimeException("Error calling API: " + response.getData());
+            }
+
+            String data = String.valueOf(response.getData());
+
+            log.info("Response from team info is: " + data);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(new ApiResponse(false,"Some error occurred while fetching team info",null));
+            log.error("Error getting team Information",e);
         }
     }
 }

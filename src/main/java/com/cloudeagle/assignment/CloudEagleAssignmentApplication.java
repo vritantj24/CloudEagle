@@ -1,11 +1,13 @@
 package com.cloudeagle.assignment;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.awt.*;
 import java.net.URI;
 
+@Slf4j
 @SpringBootApplication
 public class CloudEagleAssignmentApplication {
 
@@ -33,7 +35,7 @@ public class CloudEagleAssignmentApplication {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error redirecting auth",e);
 		}
 	}
 

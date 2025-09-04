@@ -15,3 +15,11 @@ logging:
         http=DEBUG:
     httpclient:
       wire=DEBUG:
+
+dropbox:
+  auth-url: https://www.dropbox.com/oauth2/authorize
+  client-id: 2oxb7jo695kcpe8
+  redirect-uri: http://localhost:8080/api/team/info
+  team-info-url: https://api.dropboxapi.com/2/team/get_info
+  token-url: https://www.dropbox.com/oauth2/token
+  client-secret: w228wsufcj9g3oc
